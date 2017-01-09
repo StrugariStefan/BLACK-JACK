@@ -14,15 +14,16 @@ private:
     string suita;
 };
 
-carte::carte()
-{
-
-}
 
 carte::carte(string numarcarte,string suitacarte)
 {
     numar=numarcarte;
     suita=suitacarte;
+}
+
+carte::carte()  
+{
+    
 }
 
 string carte::afisare() const

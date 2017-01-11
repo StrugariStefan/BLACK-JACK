@@ -1,10 +1,13 @@
 #include "ManadeBlackJack.h"
+#include <fstream>
+#include <cstring>
 
 using namespace std;
-
-
+fstream f("jucatori.txt");
+fstream f("sumajucatori.txt);
 ManadeBlackJack manajucator,manadealer,primamanajucator,adouamanajucator;
-int credite;
+char numeJucatori[20];
+int credite,sumabani,sumab[100];
 int pariu;
 int pariu1,pariu2;
 void afisarenormala()
@@ -767,6 +770,61 @@ void blackjack()
     }
 }
 
+void salvaresumajucator(int k)
+{
+    int i;
+    g.seekg(0,g.beg);
+    for(i=0;i<=k-1;i++)
+        g<<sumab[i]<<endl;
+}
+
+void alegerejucator()
+{
+    system("cls");
+    int k=0;
+    cout<<"1.Introduceti nume jucator nou"<<endl;
+    cout<<"2.Introduceti nume jucator deja existent"<<endl;
+    int decizieptnume;
+    cin>>decizieptnume;
+    cin.get();
+    switch(decizieptnume)
+    {
+        case 1:
+            cout<<"Scrieti numele jucatorului nou"<<endl;
+            f.seekg(0,f.end);
+            g.seekg(0,g.end);
+            cin>>numeJucatori;
+            cin.get();
+            sumabani=1000;
+            blackjack();
+            f<<numeJucatori<<endl;
+            g<<credite<<endl;
+            return;
+        case 2:
+            char nume[20];
+            cout<<"Scrieti numele jucatorului vechi"<<endl;
+            cin>>nume;
+            cin.get();
+            while(f>>numeJucatori)
+            {
+                g>>sumab[k];
+                if(strcmp(numeJucatori,nume)==0)
+                {
+                    sumabani=sumab[k];
+                    blackjack();
+                    sumab[k]=credite;
+                }
+                k++;
+            }
+            salvaresumajucator(k);
+            return;
+        default:
+            cout<<"NU ati selectat una din optiunile disponibile"<<endl;
+            system("pause");
+            alegerejucator();
+    }
+}
+
 void reguli()
 {
     system("cls");
@@ -775,7 +833,7 @@ void reguli()
 cout<<"Derularea jocului: fiecare jucator primeste initial 2 carti ce vor fi afisate tuturor participantilor la joc. Dealer-ul (casa) va primi tot 2 carti, dintre care una cu fata in jos."<<endl;
  cout<<"Dupa impartire fiecare jucator are sansa de a avea suma cartilor 21, sau cat mai aproape dupa cum urmeaza."<<endl;
 
-cout<<"Decizia jucatorului: Dupa impartirea cartilor jucatorul poate alege între 4 optiuni standard: hit, stand, split, double down. La unele mese de joc, se poate apela si la optiunea surrender."<<endl;
+cout<<"Decizia jucatorului: Dupa impartirea cartilor jucatorul poate alege Ã®ntre 4 optiuni standard: hit, stand, split, double down. La unele mese de joc, se poate apela si la optiunea surrender."<<endl;
 
 cout<<"HIT: mai iau o carte"<<endl;
 
@@ -808,7 +866,7 @@ int main()
     switch(decizie)
     {
         case 1:
-            blackjack();
+            alegerejucator();
             goto meniu;
         case 2:
             reguli();

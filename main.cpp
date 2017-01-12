@@ -90,12 +90,6 @@ void blackjack()
     inceputmana:
     system("cls");
     surrender=false;
-    if(credite==0)
-    {
-        cout<<"NU mai aveti credite"<<endl;
-        system("pause");
-        return;
-    }
     cout<<"Credite:"<<credite<<endl;
     cout<<"Plasati pariul"<<endl;
     cin>>pariu;
@@ -417,6 +411,13 @@ void blackjack()
     goto sfarsitmana;
     sfarsitmana:
     afisarenormala();
+    if(credite==0)
+    {
+        cout<<"NU mai aveti credite"<<endl;
+        credite=1000;
+        system("pause");
+        return;
+    }
     cout<<"1.Vreau sa mai joc"<<endl;
     cout<<"2.Nu vreau sa mai joc"<<endl;
     int decizie2;
@@ -754,6 +755,13 @@ void blackjack()
     }
     sfarsitsplit:
     afisarenormalasplit();
+    if(credite==0)
+    {
+        cout<<"NU mai aveti credite"<<endl;
+        credite=1000;
+        system("pause");
+        return;
+    }
     cout<<"1.Vreau sa mai joc"<<endl;
     cout<<"2.Nu vreau sa mai joc"<<endl;
     cin>>decizie2;

@@ -3,11 +3,14 @@
 #include <cstring>
 
 using namespace std;
+
 fstream f("jucatori.txt");
-fstream f("sumajucatori.txt);
-ManadeBlackJack manajucator,manadealer,primamanajucator,adouamanajucator;
+fstream g("sumajucatori.txt");
 char numeJucatori[20];
-int credite,sumabani,sumab[100];
+int sumabani;
+int sumab[100];
+ManadeBlackJack manajucator,manadealer,primamanajucator,adouamanajucator;
+int credite;
 int pariu;
 int pariu1,pariu2;
 void afisarenormala()
@@ -83,8 +86,8 @@ void blackjack()
     bool dublaj;
     bool split;
     bool surrender;
-    credite=1000;
-    eticheta0:
+    credite=sumabani;
+    inceputmana:
     system("cls");
     surrender=false;
     if(credite==0)
@@ -100,7 +103,7 @@ void blackjack()
     {
         cout<<"Pariul nu este valid . Incercati din nou"<<endl;
         system("pause");
-        goto eticheta0;
+        goto inceputmana;
     }
     system("cls");
     pachet.amestecare();
@@ -125,7 +128,7 @@ void blackjack()
                 manapierduta();
                 system("pause");
             }
-            goto eticheta5;
+            goto sfarsitmana;
         }
         else
         {
@@ -138,14 +141,14 @@ void blackjack()
                 pariu=(pariu*3)/2;
                 manacastigata();
                 system("pause");
-                goto eticheta5;
+                goto sfarsitmana;
             }
             else
             {
                 cout<<"dealerul nu are blackjack"<<endl;
                 cout<<endl;
                 system("pause");
-                goto eticheta4;
+                goto impartemanajucator;
             }
         }
     }
@@ -181,7 +184,7 @@ void blackjack()
                         manapierduta();
                         system("pause");
                     }
-                    goto eticheta5;
+                    goto sfarsitmana;
                 }
                 else
                 {
@@ -189,7 +192,7 @@ void blackjack()
                     cout<<"dealerul nu are blackjack"<<endl;
                     cout<<endl;
                     system("pause");
-                    goto eticheta4;
+                    goto impartemanajucator;
                 }
             case 2:
                 if(manadealer.cartileunuijucator[0].valoarecarte==10)
@@ -208,7 +211,7 @@ void blackjack()
                         manapierduta();
                         system("pause");
                     }
-                    goto eticheta5;
+                    goto sfarsitmana;
                 }
                 else
                 {
@@ -216,7 +219,7 @@ void blackjack()
                     cout<<"dealerul nu are blackjack"<<endl;
                     cout<<endl;
                     system("pause");
-                    goto eticheta4;
+                    goto impartemanajucator;
                 }
             default:
                 cout<<"NU ati selectat una din optiunile disponibile"<<endl;
@@ -233,9 +236,9 @@ void blackjack()
         pariu=(pariu*3)/2;
         manacastigata();
         system("pause");
-        goto eticheta5;
+        goto sfarsitmana;
     }
-    eticheta4:
+    impartemanajucator:
     afisarecuocarteadealeruluiascunsa();
     if(surrender==false)
     {
@@ -251,7 +254,7 @@ void blackjack()
     }
     else
         dublaj=false;
-    if(manajucator.cartileunuijucator[0].valoarecarte==manajucator.cartileunuijucator[1].valoarecarte&&pariu*2<=credite)
+    if(manajucator.cartileunuijucator[0].valoarecarte==manajucator.cartileunuijucator[1].valoarecarte&&pariu*2<=credite&&manajucator.nrcarti==1)
     {
         split=true;
         if(dublaj==false)
@@ -269,25 +272,24 @@ void blackjack()
             case 0:
                 pariu/=2;
                 manapierduta();
-                goto eticheta5;
+                goto sfarsitmana;
             case 1:
                 manajucator.primestecarte();
-                goto eticheta1;
+                goto verificaremanajucator;
             case 2:
-                goto eticheta2;
+                goto impartemanadealer;
             case 3:
                 manajucator.primestecarte();
                 pariu*=2;
                 if(manajucator.suma>21)
                     manajucator.suma-=10;
-                goto eticheta2;
+                goto impartemanadealer;
             case 4:
-                pariu*=2;
-                goto eticheta3;
+                goto manasplit;
             default:
                 cout<<"NU ati selectat una din optiunile disponibile"<<endl;
                 system("pause");
-                goto eticheta4;
+                goto impartemanajucator;
     }
     else
         if(split)
@@ -296,19 +298,18 @@ void blackjack()
                 case 0:
                     pariu/=2;
                     manapierduta();
-                    goto eticheta5;
+                    goto sfarsitmana;
                 case 1:
                     manajucator.primestecarte();
-                    goto eticheta1;
+                    goto verificaremanajucator;
                 case 2:
-                    goto eticheta2;
+                    goto impartemanadealer;
                 case 3:
-                    pariu*=2;
-                    goto eticheta3;
+                    goto manasplit;
                 default:
                     cout<<"NU ati selectat una din optiunile disponibile"<<endl;
                     system("pause");
-                    goto eticheta4;
+                    goto impartemanajucator;
             }
         else
             if(dublaj)
@@ -317,22 +318,22 @@ void blackjack()
                     case 0:
                         pariu/=2;
                         manapierduta();
-                        goto eticheta5;
+                        goto sfarsitmana;
                     case 1:
                         manajucator.primestecarte();
-                        goto eticheta1;
+                        goto verificaremanajucator;
                     case 2:
-                        goto eticheta2;
+                        goto impartemanadealer;
                     case 3:
                         manajucator.primestecarte();
                         pariu*=2;
                         if(manajucator.suma>21)
                             manajucator.suma-=10;
-                        goto eticheta2;
+                        goto impartemanadealer;
                     default:
                         cout<<"NU ati selectat una din optiunile disponibile"<<endl;
                         system("pause");
-                        goto eticheta4;
+                        goto impartemanajucator;
                 }
                 else
                     switch(decizie)
@@ -340,25 +341,25 @@ void blackjack()
                     case 0:
                         pariu/=2;
                         manapierduta();
-                        goto eticheta5;
+                        goto sfarsitmana;
                     case 1:
                         manajucator.primestecarte();
-                        goto eticheta1;
+                        goto verificaremanajucator;
                     case 2:
-                        goto eticheta2;
+                        goto impartemanadealer;
                     default:
                         cout<<"NU ati selectat una din optiunile disponibile"<<endl;
                         system("pause");
-                        goto eticheta4;
+                        goto impartemanajucator;
                 }
-    eticheta1:
+    verificaremanajucator:
     if(manajucator.suma>21)
     {
         if(manajucator.soft==true)
         {
             manajucator.suma-=10;
             manajucator.soft=false;
-            goto eticheta4;
+            goto impartemanajucator;
         }
         else
         {
@@ -366,15 +367,15 @@ void blackjack()
             cout<<"ai pierdut"<<endl;
             manapierduta();
             system("pause");
-            goto eticheta5;
+            goto sfarsitmana;
         }
     }
     else
         if(manajucator.suma==21)
-            goto eticheta2;
+            goto impartemanadealer;
         else
-            goto eticheta4;
-    eticheta2:
+            goto impartemanajucator;
+    impartemanadealer:
     while(manadealer.suma<17)
     {
         manadealer.primestecarte();
@@ -413,8 +414,8 @@ void blackjack()
                 manacastigata();
                 system("pause");
             }
-    goto eticheta5;
-    eticheta5:
+    goto sfarsitmana;
+    sfarsitmana:
     afisarenormala();
     cout<<"1.Vreau sa mai joc"<<endl;
     cout<<"2.Nu vreau sa mai joc"<<endl;
@@ -423,25 +424,24 @@ void blackjack()
     switch(decizie2)
     {
         case 1:
-            goto eticheta0;
+            goto inceputmana;
         case 2:
             return;
         default:
             cout<<"Nu ati selectata una din obtiunile disponibile , incercati din nou "<<endl;
             system("pause");
-            goto eticheta5;
+            goto sfarsitmana;
     }
-    eticheta3:
+    manasplit:
     primamanajucator.nrcarti=0;
     adouamanajucator.nrcarti=0;
     primamanajucator.cartileunuijucator[0]=manajucator.cartileunuijucator[0];
     adouamanajucator.cartileunuijucator[0]=manajucator.cartileunuijucator[1];
     primamanajucator.suma=primamanajucator.cartileunuijucator[0].valoarecarte;
     adouamanajucator.suma=adouamanajucator.cartileunuijucator[0].valoarecarte;
-    int pariu1,pariu2;
     pariu1=pariu2=pariu;
     bool mananr1=true;
-    eticheta7:
+    impartemanajucatorsplit:
     afisarecuocarteadealeruluiascunsasplit();
     if (mananr1)
     {
@@ -463,33 +463,33 @@ void blackjack()
             {
                 case 1:
                     primamanajucator.primestecarte();
-                    goto eticheta6;
+                    goto verificareprimamana;
                 case 2:
                     mananr1=false;
-                    goto eticheta7;
+                    goto impartemanajucatorsplit;
                 case 3:
                     primamanajucator.primestecarte();
                     pariu1*=2;
                     mananr1=false;
-                    goto eticheta7;
+                    goto impartemanajucatorsplit;
                 default:
                     cout<<"NU ati selectat una din optiunile disponibile"<<endl;
                     system("pause");
-                    goto eticheta7;
+                    goto impartemanajucatorsplit;
             }
         else
             switch(decizie1)
         {
             case 1:
                 primamanajucator.primestecarte();
-                goto eticheta6;
+                goto verificareprimamana;
             case 2:
                 mananr1=false;
-                goto eticheta7;
+                goto impartemanajucatorsplit;
             default:
                 cout<<"NU ati selectat una din optiunile disponibile"<<endl;
                 system("pause");
-                goto eticheta7;
+                goto impartemanajucatorsplit;
         }
     }
     else
@@ -512,40 +512,40 @@ void blackjack()
         {
             case 1:
                 adouamanajucator.primestecarte();
-                goto eticheta8;
+                goto verificareadouamana;
             case 2:
-                goto eticheta9;
+                goto impartemanadealersplit;
             case 3:
                 adouamanajucator.primestecarte();
                 pariu2*=2;
-                goto eticheta9;
+                goto impartemanadealersplit;
             default:
                 cout<<"NU ati selectat una din optiunile disponibile"<<endl;
                 system("pause");
-                goto eticheta7;
+                goto impartemanajucatorsplit;
         }
         else
             switch(decizie1)
         {
             case 1:
                 adouamanajucator.primestecarte();
-                goto eticheta8;
+                goto verificareadouamana;
             case 2:
-                goto eticheta9;
+                goto impartemanadealersplit;
             default:
                 cout<<"NU ati selectat una din optiunile disponibile"<<endl;
                 system("pause");
-                goto eticheta7;
+                goto impartemanajucatorsplit;
         }
     }
-    eticheta6:
+    verificareprimamana:
     if(primamanajucator.suma>21)
     {
         if(primamanajucator.soft==true)
         {
             primamanajucator.suma-=10;
             primamanajucator.soft=false;
-            goto eticheta7;
+            goto impartemanajucatorsplit;
         }
         else
         {
@@ -558,30 +558,30 @@ void blackjack()
     else
         if(primamanajucator.suma==21)
             mananr1=false;
-    goto eticheta7;
-    eticheta8:
+    goto impartemanajucatorsplit;
+    verificareadouamana:
     if(adouamanajucator.suma>21)
     {
         if(adouamanajucator.soft==true)
         {
             adouamanajucator.suma-=10;
             adouamanajucator.soft=false;
-            goto eticheta7;
+            goto impartemanajucatorsplit;
         }
         else
         {
             afisarenormalasplit();
             cout<<"Ai pierdut a doua mana"<<endl;
             system("pause");
-            goto eticheta9;
+            goto impartemanadealersplit;
         }
     }
     else
         if(adouamanajucator.suma==21)
-            goto eticheta9;
+            goto impartemanadealersplit;
         else
-            goto eticheta7;
-    eticheta9:
+            goto impartemanajucatorsplit;
+    impartemanadealersplit:
     if(primamanajucator.suma>21&&adouamanajucator.suma>21)
     {
         afisarenormalasplit();
@@ -752,7 +752,7 @@ void blackjack()
                 system("pause");
             }
     }
-    eticheta10:
+    sfarsitsplit:
     afisarenormalasplit();
     cout<<"1.Vreau sa mai joc"<<endl;
     cout<<"2.Nu vreau sa mai joc"<<endl;
@@ -760,17 +760,17 @@ void blackjack()
     switch(decizie2)
     {
         case 1:
-            goto eticheta0;
+            goto inceputmana;
         case 2:
             return;
         default:
             cout<<"NU ati selectat una din optiunile disponibile"<<endl;
             system("pause");
-            goto eticheta10;
+            goto sfarsitsplit;
     }
 }
 
-void salvaresumajucator(int k)
+void afis(int k)
 {
     int i;
     g.seekg(0,g.beg);
@@ -782,6 +782,7 @@ void alegerejucator()
 {
     system("cls");
     int k=0;
+    f.seekg(f.beg);
     cout<<"1.Introduceti nume jucator nou"<<endl;
     cout<<"2.Introduceti nume jucator deja existent"<<endl;
     int decizieptnume;
@@ -816,7 +817,7 @@ void alegerejucator()
                 }
                 k++;
             }
-            salvaresumajucator(k);
+            afis(k);
             return;
         default:
             cout<<"NU ati selectat una din optiunile disponibile"<<endl;
@@ -830,30 +831,31 @@ void reguli()
     system("cls");
     cout<<"Valoarea cartilor: cartile intre 2 si 10 au valoarea scrise pe ele, figurile au valoarea 10, asul poate fi 1 sau 11 dupa preferinta jucatorului."<<endl;
 
-cout<<"Derularea jocului: fiecare jucator primeste initial 2 carti ce vor fi afisate tuturor participantilor la joc. Dealer-ul (casa) va primi tot 2 carti, dintre care una cu fata in jos."<<endl;
- cout<<"Dupa impartire fiecare jucator are sansa de a avea suma cartilor 21, sau cat mai aproape dupa cum urmeaza."<<endl;
+    cout<<"Derularea jocului: fiecare jucator primeste initial 2 carti ce vor fi afisate tuturor participantilor la joc. Dealer-ul (casa) va primi tot 2 carti, dintre care una cu fata in jos."<<endl;
+    cout<<"Dupa impartire fiecare jucator are sansa de a avea suma cartilor 21, sau cat mai aproape dupa cum urmeaza."<<endl;
 
-cout<<"Decizia jucatorului: Dupa impartirea cartilor jucatorul poate alege între 4 optiuni standard: hit, stand, split, double down. La unele mese de joc, se poate apela si la optiunea surrender."<<endl;
+    cout<<"Decizia jucatorului: Dupa impartirea cartilor jucatorul poate alege între 4 optiuni standard: hit, stand, split, double down. La unele mese de joc, se poate apela si la optiunea surrender."<<endl;
 
-cout<<"HIT: mai iau o carte"<<endl;
+    cout<<"HIT: mai iau o carte"<<endl;
 
-cout<<"STAND: nu mai iau carte"<<endl;
+    cout<<"STAND: nu mai iau carte"<<endl;
 
-cout<<"DOUBLE DOWN: dublez miza, iau doar o singura carte (se foloseste cand jucatorul este sigur ca suma finala este peste 19)"<<endl;
+    cout<<"DOUBLE DOWN: dublez miza, iau doar o singura carte (se foloseste cand jucatorul este sigur ca suma finala este peste 19)"<<endl;
 
-cout<<"SPLIT: optiune folosita cand jucatorul are cele doua carti primite de aceeasi valoare, jucatorul formand cate o mana pe fiecare carte, cele 2 maini se joaca apoi dupa regulile standard"<<endl;
+    cout<<"SPLIT: optiune folosita cand jucatorul are cele doua carti primite de aceeasi valoare, jucatorul formand cate o mana pe fiecare carte, cele 2 maini se joaca apoi dupa regulile standard"<<endl;
 
-cout<<"SURRENDER: se foloseste doar la unele mese de joc, jucatorul are posibilitatea de a se retrage dupa ce primeste cele doua carti, primind inapoi doar 1/2 din suma pariata.(se foloseste aceasta comanda in general cand jucatorul are suma cartilor primite 14 sau 15)"<<endl;
+    cout<<"SURRENDER: se foloseste doar la unele mese de joc, jucatorul are posibilitatea de a se retrage dupa ce primeste cele doua carti, primind inapoi doar 1/2 din suma pariata.(se foloseste aceasta comanda in general cand jucatorul are suma cartilor primite 14 sau 15)"<<endl;
 
-cout<<"Decizia casei:"<<endl;
+    cout<<"Decizia casei:"<<endl;
 
-cout<<"SOFT 17: Cand suma cartilor dealerului este sub 17, acesta trebuie sa mai traga o carte. Daca suma este 17 sau mai mare dealerul nu mai are voie la o alta carte."<<endl;
+    cout<<"SOFT 17: Cand suma cartilor dealerului este sub 17, acesta trebuie sa mai traga o carte. Daca suma este 17 sau mai mare dealerul nu mai are voie la o alta carte."<<endl;
 
-cout<<"BLACKJACK: Daca un jucator are din impartirea cartilor suma 21 primeste de la casa (3:2)x valoarea pariului."<<endl;
+    cout<<"BLACKJACK: Daca un jucator are din impartirea cartilor suma 21 primeste de la casa (3:2)x valoarea pariului."<<endl;
 
-cout<<"INSURANCE: Cand casa are cartea cu fata in sus <as> atunci un jucator poate pune un insurance. Acest pariu verifica daca suma casei este de 21. Daca jucatorul castiga pariul el primeste 2x valoarea insurance-ului."<<endl;
-cout<<"Valoarea insurance-ului reprezinta jumatate din valoare pariului initial"<<endl;
+    cout<<"INSURANCE: Cand casa are cartea cu fata in sus <as> atunci un jucator poate pune un insurance. Acest pariu verifica daca suma casei este de 21. Daca jucatorul castiga pariul el primeste 2x valoarea insurance-ului."<<endl;
+    cout<<"Valoarea insurance-ului reprezinta jumatate din valoare pariului initial"<<endl;
 }
+
 int main()
 {
     meniu:
@@ -861,9 +863,9 @@ int main()
     cout<<"1.Start"<<endl;
     cout<<"2.Reguli"<<endl;
     cout<<"3.Exit"<<endl;
-    int decizie;
-    cin>>decizie;
-    switch(decizie)
+    int deciziedeinceput;
+    cin>>deciziedeinceput;
+    switch(deciziedeinceput)
     {
         case 1:
             alegerejucator();

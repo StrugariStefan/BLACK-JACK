@@ -770,7 +770,7 @@ void blackjack()
     }
 }
 
-void afis(int k)
+void salvaresumajucator(int k)
 {
     int i;
     g.seekg(0,g.beg);
@@ -817,7 +817,7 @@ void alegerejucator()
                 }
                 k++;
             }
-            afis(k);
+            salvaresumajucator(k);
             return;
         default:
             cout<<"NU ati selectat una din optiunile disponibile"<<endl;

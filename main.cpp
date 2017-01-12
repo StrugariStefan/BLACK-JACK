@@ -782,6 +782,7 @@ void alegerejucator()
 {
     system("cls");
     int k=0;
+    bool exista=false;
     f.seekg(f.beg);
     cout<<"1.Introduceti nume jucator nou"<<endl;
     cout<<"2.Introduceti nume jucator deja existent"<<endl;
@@ -791,18 +792,35 @@ void alegerejucator()
     switch(decizieptnume)
     {
         case 1:
+            numenou:
+            system("cls");
             cout<<"Scrieti numele jucatorului nou"<<endl;
-            f.seekg(0,f.end);
-            g.seekg(0,g.end);
+            f.seekg(0,f.beg);
+            g.seekg(0,g.beg);
             cin>>numeJucatori;
             cin.get();
+            while(f>>nume)
+                if(strcmp(nume,numeJucatori)==0)
+                {
+                    cout<<"Acest nume exista deja . Incercati din nou ."<<endl;
+                    system("pause");
+                    goto numenou;
+                }
+            f.seekg(0,f.end);
+            f.clear();
+            g.seekg(0,g.end);
             sumabani=1000;
             blackjack();
             f<<numeJucatori<<endl;
             g<<credite<<endl;
             return;
         case 2:
+            numevechi:
+            system("cls");
             char nume[20];
+            k=0;
+            f.seekg(0,f.beg);
+            g.seekg(0,g.beg);
             cout<<"Scrieti numele jucatorului vechi"<<endl;
             cin>>nume;
             cin.get();
@@ -814,10 +832,19 @@ void alegerejucator()
                     sumabani=sumab[k];
                     blackjack();
                     sumab[k]=credite;
+                    exista=true;
                 }
                 k++;
             }
-            salvaresumajucator(k);
+            f.clear();
+            if(exista==true)
+                salvaresumajucator(k);
+            else
+            {
+                cout<<"Numele pe care l-ati selectat nu exista . Incercati din nou "<<endl;
+                system("pause");
+                goto numevechi;
+            }
             return;
         default:
             cout<<"NU ati selectat una din optiunile disponibile"<<endl;

@@ -6,13 +6,14 @@ using namespace std;
 
 fstream f("jucatori.txt");
 fstream g("sumajucatori.txt");
-char numeJucatori[20];
+char numeJucatori[20],nume[20];
 int sumabani;
 int sumab[100];
 ManadeBlackJack manajucator,manadealer,primamanajucator,adouamanajucator;
 int credite;
 int pariu;
 int pariu1,pariu2;
+
 void afisarenormala()
 {
     system("cls");
@@ -23,6 +24,7 @@ void afisarenormala()
     cout<<"cartile jucatorului"<<endl;
     manajucator.afisaremana();
 }
+
 void afisarecuocarteadealeruluiascunsa()
 {
     system("cls");
@@ -35,6 +37,7 @@ void afisarecuocarteadealeruluiascunsa()
     cout<<"cartile jucatorului"<<endl;
     manajucator.afisaremana();
 }
+
 void afisarenormalasplit()
 {
     int i;
@@ -53,6 +56,7 @@ void afisarenormalasplit()
     cout<<endl;
     cout<<endl;
 }
+
 void afisarecuocarteadealeruluiascunsasplit()
 {
     int i;
@@ -73,14 +77,17 @@ void afisarecuocarteadealeruluiascunsasplit()
     cout<<endl;
     cout<<endl;
 }
+
 void manacastigata()
 {
     credite+=pariu;
 }
+
 void manapierduta()
 {
     credite-=pariu;
 }
+
 void blackjack()
 {
     bool dublaj;
@@ -790,13 +797,20 @@ void alegerejucator()
 {
     system("cls");
     int k=0;
-    bool exista=false;
-    f.seekg(f.beg);
-    cout<<"1.Introduceti nume jucator nou"<<endl;
-    cout<<"2.Introduceti nume jucator deja existent"<<endl;
     int decizieptnume;
-    cin>>decizieptnume;
-    cin.get();
+    bool exista=false;
+    f.seekg(0,f.end);
+    int nrlinii=f.tellg();
+    f.seekg(0,f.beg);
+    if(nrlinii==2)
+        decizieptnume=1;
+    else
+    {
+        cout<<"1.Introduceti nume jucator nou"<<endl;
+        cout<<"2.Introduceti nume jucator deja existent"<<endl;
+        cin>>decizieptnume;
+        cin.get();
+    }
     switch(decizieptnume)
     {
         case 1:
@@ -917,3 +931,4 @@ int main()
             goto meniu;
     }
 }
+

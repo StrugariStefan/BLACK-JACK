@@ -814,8 +814,8 @@ void alegerejucator()
                     system("pause");
                     goto numenou;
                 }
-            f.seekg(0,f.end);
             f.clear();
+            f.seekg(0,f.end);
             g.seekg(0,g.end);
             sumabani=1000;
             blackjack();

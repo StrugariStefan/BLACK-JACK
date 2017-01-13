@@ -843,7 +843,12 @@ void alegerejucator()
             k=0;
             f.seekg(0,f.beg);
             g.seekg(0,g.beg);
-            cout<<"Scrieti numele jucatorului vechi"<<endl;
+            cout<<"Alegeti numele jucatorului vechi"<<endl;
+            cout<<endl;
+            while(f>>numeJucatori)
+                cout<<numeJucatori<<endl;
+            f.clear();
+            f.seekg(0,f.beg);
             cin>>nume;
             cin.get();
             while(f>>numeJucatori)
